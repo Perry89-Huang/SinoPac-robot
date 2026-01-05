@@ -1,0 +1,14 @@
+# 敏感資訊
+config.ini
+*.pfx
+*.log
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python

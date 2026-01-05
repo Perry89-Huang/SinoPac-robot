@@ -1,0 +1,40 @@
+
+µ{¦¡¤U³æ 103 ¶R¶i
+trade = api.place_order(contract_dhf, order1)
+----------------
+Trade(contract=Future(code='DHFF2', symbol='DHF202206', name='é´»æµ·æœŸè²¨06', category='DHF', delivery_month='202206', delivery_date='2022/06/15', underlying_kind='S', underlying_code='2317', unit=1, limit_up=112.5, limit_down=92.3, reference=102.5, update_date='2022/05/13'), order=Order(action=<Action.Buy: 'Buy'>, price=103, quantity=1, id='60e0a7ac', seqno='837735', account=Account(account_type=<AccountType.Future: 'F'>, person_id='J120420374', broker_id='F002000', account_id='1641626', signed=True), price_type=<StockPriceType.LMT: 'LMT'>, order_type=<FuturesOrderType.ROD: 'ROD'>), status=OrderStatus(id='60e0a7ac', status=<Status.PendingSubmit: 'PendingSubmit'>, status_code='    ', order_datetime=datetime.datetime(2022, 5, 13, 10, 35, 4), deals=[]))
+BidAsk Exchange: TAIFEX, BidAsk: BidAsk(code='DHFF2', datetime=datetime.datetime(2022, 5, 13, 10, 35, 6, 374000), bid_total_vol=238, ask_total_vol=217, bid_price=[Decimal('103'), Decimal('102.5'), Decimal('102'), Decimal('101.5'), Decimal('101')], bid_volume=[72, 82, 36, 29, 19], diff_bid_vol=[1, 0, 0, 0, 0], ask_price=[Decimal('103.5'), Decimal('104'), Decimal('104.5'), Decimal('105'), Decimal('105.5')], ask_volume=[50, 68, 55, 26, 18], diff_ask_vol=[0, 0, 0, 0, 0], first_derived_bid_price=Decimal('103'), first_derived_ask_price=Decimal('103.5'), first_derived_bid_vol=1, first_derived_ask_vol=88, underlying_price=Decimal('103.5'), simtrade=0)
+
+api.set_order_callback(place_order_callback)
+-----------------------------------
+place_order_callback function is running...
+OrderState.FOrder {'operation': {'op_type': 'New', 'op_code': '00', 'op_msg': ''}, 'order': {'id': '60e0a7ac', 'seqno': '837735', 'ordno': 'tn0cT', 'account': {'account_type': 'F', 'person_id': '', 'broker_id': 'F002000', 'account_id': '1641626', 'signed': True}, 'action': 'Buy', 'price': 103.0, 'quantity': 1, 'order_type': 'ROD', 'price_type': 'LMT', 'market_type': 'Day', 'oc_type': 'New', 'subaccount': '', 'combo': False}, 'status': {'id': '60e0a7ac', 'exchange_ts': 1652409306, 'modified_price': 0.0, 'cancel_quantity': 0, 'order_quantity': 1, 'web_id': 'Z'}, 'contract': {'security_type': 'FUT', 'code': 'DHF', 'exchange': 'TIM', 'delivery_month': '202206', 'delivery_date': '', 'strike_price': 0.0, 'option_right': 'Future'}}
+BidAsk Exchange: TAIFEX, BidAsk: BidAsk(code='DHFF2', datetime=datetime.datetime(2022, 5, 13, 10, 35, 30, 124000), bid_total_vol=238, ask_total_vol=217, bid_price=[Decimal('103'), Decimal('102.5'), Decimal('102'), Decimal('101.5'), Decimal('101')], bid_volume=[72, 82, 36, 29, 19], diff_bid_vol=[0, 0, 0, 0, 0], ask_price=[Decimal('103.5'), Decimal('104'), Decimal('104.5'), Decimal('105'), Decimal('105.5')], ask_volume=[50, 68, 55, 26, 18], diff_ask_vol=[0, 0, 0, 0, 0], first_derived_bid_price=Decimal('103'), first_derived_ask_price=Decimal('103.5'), first_derived_bid_vol=2, first_derived_ask_vol=88, underlying_price=Decimal('103.5'), simtrade=0)
+
+
+¤â°Ê­×§ï»ù®æ 103 -->103.5
+------------------------------
+¦¨¥æ
+place_order_callback function is running...
+OrderState.FDeal {'trade_id': '60e0a7ac', 'seqno': '837735', 'ordno': 'tn0cTQ1S', 'exchange_seq': 'd2000964', 'broker_id': 'F002000', 'account_id': '1641626', 
+'action': 'Buy', 'code': 'DHF', 'price': 103.5, 'quantity': 1, 'subaccount': '', 'security_type': 'FUT', 'delivery_month': '202206', 'strike_price': 0.0, 
+'option_right': 'Future', 'market_type': 'Day', 'combo': False, 'ts': 1652410461}
+
+­×§ï»ù®æ
+place_order_callback function is running...
+OrderState.FOrder {'operation': {'op_type': 'UpdatePrice', 'op_code': '00', 'op_msg': ''}, 'order': {'id': '60e0a7ac', 'seqno': '837735', 'ordno': 'tn0cT', 
+'account': {'account_type': 'F', 'person_id': '', 'broker_id': 'F002000', 'account_id': '1641626', 'signed': True}, 'action': 'Buy', 'price': 103.5, 
+'quantity': 1, 'order_type': 'ROD', 'price_type': 'UPL', 'market_type': 'Day', 'oc_type': 'New', 'subaccount': '', 'combo': False}, 
+'status': {'id': '60e0a7ac', 'exchange_ts': 1652410461, 'modified_price': 103.5, 'cancel_quantity': 0, 'order_quantity': 1, 'web_id': 'I'}, 
+'contract': {'security_type': 'FUT', 'code': 'DHF', 'exchange': 'TIM', 'delivery_month': '202206', 'delivery_date': '', 'strike_price': 0.0, 'option_right': 'Future'}}
+
+
+µ{¦¡¤U³æ  103 ½æ¥X
+trade = api.place_order(contract_dhf, order1)
+--------------------------------
+place_order_callback function is running...
+OrderState.FOrder {'operation': {'op_type': 'New', 'op_code': '00', 'op_msg': ''}, 'order': {'id': '545f0175', 'seqno': '839475', 'ordno': 'tn0hE', 
+'account': {'account_type': 'F', 'person_id': '', 'broker_id': 'F002000', 'account_id': '1641626', 'signed': True}, 'action': 'Sell', 'price': 104.0, 
+'quantity': 1, 'order_type': 'ROD', 'price_type': 'LMT', 'market_type': 'Day', 'oc_type': 'Cover', 'subaccount': '', 'combo': False}, 
+'status': {'id': '545f0175', 'exchange_ts': 1652411020, 'modified_price': 0.0, 'cancel_quantity': 0, 'order_quantity': 1, 'web_id': 'Z'}, 
+'contract': {'security_type': 'FUT', 'code': 'DHF', 'exchange': 'TIM', 'delivery_month': '202206', 'delivery_date': '', 'strike_price': 0.0, 'option_right': 'Future'}}

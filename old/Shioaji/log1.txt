@@ -1,0 +1,68 @@
+2022-05-09 13:29:08.768022, g_intTotalTransQuantity=0, g_intTransPrice=-103.5
+======= api.place_order: Buy | 103 | 1
+2022-05-09 13:29:08.893919, g_intTotalTransQuantity=1, g_intTransPrice=103
+======= api.place_order: Sell | 103.5 | 1
+2022-05-09 13:29:09.642924, g_intTotalTransQuantity=0, g_intTransPrice=-103.5
+======= api.place_order: Buy | 103 | 1
+2022-05-09 13:29:13.517353, g_intTotalTransQuantity=1, g_intTransPrice=103
+======= api.place_order: Sell | 103.5 | 1
+2022-05-09 13:29:15.022595, g_intTotalTransQuantity=0, g_intTransPrice=-103.5
+======= api.place_order: Buy | 103 | 1
+2022-05-09 13:29:15.150912, g_intTotalTransQuantity=1, g_intTransPrice=103
+======= api.place_order: Sell | 103.5 | 1
+2022-05-09 13:29:15.641864, g_intTotalTransQuantity=0, g_intTransPrice=-103.5
+======= api.place_order: Buy | 103 | 1
+Tick Exchange: TAIFEX, Tick: Tick(code='DHFE2', datetime=datetime.datetime(2022, 5, 9, 13, 29, 15, 854000), open=Decimal('103.5'), underlying_price=Decimal('103.5'), bid_side_total_vol=349, ask_side_total_vol=297, avg_price=Decimal('103.066809'), close=Decimal('103.5'), high=Decimal('103.5'), low=Decimal('102.5'), amount=Decimal('517.5'), total_amount=Decimal('121103.5'), volume=5, total_volume=1175, tick_type=1, chg_type=4, price_chg=Decimal('-0.5'), pct_chg=Decimal('-0.480769'), simtrade=0)
+
+2022-05-09 13:29:15.897213, g_intTotalTransQuantity=1, g_intTransPrice=103
+======= api.place_order: Sell | 103.5 | 1
+2022-05-09 13:29:16.016861, g_intTotalTransQuantity=0, g_intTransPrice=-103.5
+======= api.place_order: Buy | 103 | 1
+2022-05-09 13:29:17.891587, g_intTotalTransQuantity=1, g_intTransPrice=103
+======= api.place_order: Sell | 103.5 | 1
+2022-05-09 13:29:19.141858, g_intTotalTransQuantity=0, g_intTransPrice=-103.5
+======= api.place_order: Buy | 103 | 1
+Tick Exchange: TAIFEX, Tick: Tick(code='DHFE2', datetime=datetime.datetime(2022, 5, 9, 13, 29, 19, 966000), open=Decimal('103.5'), underlying_price=Decimal('103.5'), bid_side_total_vol=346, ask_side_total_vol=300, avg_price=Decimal('103.067177'), close=Decimal('103.5'), high=Decimal('103.5'), low=Decimal('102.5'), amount=Decimal('103.5'), total_amount=Decimal('121207'), volume=1, total_volume=1176, tick_type=1, chg_type=4, price_chg=Decimal('-0.5'), pct_chg=Decimal('-0.480769'), simtrade=0)
+
+Tick Exchange: TAIFEX, Tick: Tick(code='DHFE2', datetime=datetime.datetime(2022, 5, 9, 13, 29, 19, 967000), open=Decimal('103.5'), underlying_price=Decimal('103.5'), bid_side_total_vol=347, ask_side_total_vol=301, avg_price=Decimal('103.067545'), close=Decimal('103.5'), high=Decimal('103.5'), low=Decimal('102.5'), amount=Decimal('103.5'), total_amount=Decimal('121310.5'), volume=1, total_volume=1177, tick_type=1, chg_type=4, price_chg=Decimal('-0.5'), pct_chg=Decimal('-0.480769'), simtrade=0)
+
+2022-05-09 13:29:20.032853, g_intTotalTransQuantity=1, g_intTransPrice=103
+======= api.place_order: Sell | 103.5 | 1
+2022-05-09 13:29:23.777506, g_intTotalTransQuantity=0, g_intTransPrice=-103.5
+======= api.place_order: Buy | 103 | 1
+2022-05-09 13:29:23.899977, g_intTotalTransQuantity=1, g_intTransPrice=103
+======= api.place_order: Sell | 103.5 | 1
+2022-05-09 13:29:24.018035, g_intTotalTransQuantity=0, g_intTransPrice=-103.5
+======= api.place_order: Buy | 103 | 1
+2022-05-09 13:29:26.016316, g_intTotalTransQuantity=1, g_intTransPrice=103
+======= api.place_order: Sell | 103.5 | 1
+2022-05-09 13:29:28.766866, g_intTotalTransQuantity=0, g_intTransPrice=-103.5
+======= api.place_order: Buy | 103 | 1
+2022-05-09 13:29:30.142923, g_intTotalTransQuantity=1, g_intTransPrice=103
+======= api.place_order: Sell | 103.5 | 1
+2022-05-09 13:29:32.018149, g_intTotalTransQuantity=0, g_intTransPrice=-103.5
+======= api.place_order: Buy | 103 | 1
+2022-05-09 13:29:32.143207, g_intTotalTransQuantity=1, g_intTransPrice=103
+======= api.place_order: Sell | 103.5 | 1
+2022-05-09 13:29:36.017627, g_intTotalTransQuantity=0, g_intTransPrice=-103.5
+======= api.place_order: Buy | 103 | 1
+2022-05-09 13:29:41.268962, g_intTotalTransQuantity=1, g_intTransPrice=103
+======= api.place_order: Sell | 103.5 | 1
+2022-05-09 13:29:46.892173, g_intTotalTransQuantity=0, g_intTransPrice=-103.5
+======= api.place_order: Buy | 103 | 1
+2022-05-09 13:29:48.518665, g_intTotalTransQuantity=1, g_intTransPrice=103
+======= api.place_order: Sell | 103.5 | 1
+2022-05-09 13:29:53.142298, g_intTotalTransQuantity=0, g_intTransPrice=-103.5
+======= api.place_order: Buy | 103 | 1
+2022-05-09 13:29:53.266315, g_intTotalTransQuantity=1, g_intTransPrice=103
+======= api.place_order: Sell | 103.5 | 1
+2022-05-09 13:30:00.518321, g_intTotalTransQuantity=0, g_intTransPrice=-103.5
+======= api.place_order: Buy | 103 | 1
+2022-05-09 13:30:01.143665, g_intTotalTransQuantity=1, g_intTransPrice=103
+======= api.place_order: Sell | 103.5 | 1
+2022-05-09 13:30:01.768370, g_intTotalTransQuantity=0, g_intTransPrice=-103.5
+======= api.place_order: Buy | 103 | 1
+2022-05-09 13:30:09.890939, g_intTotalTransQuantity=1, g_intTransPrice=103
+======= api.place_order: Sell | 103.5 | 1
+2022-05-09 13:30:10.143265, g_intTotalTransQuantity=0, g_intTransPrice=-103.5
+======= api.place_order: Buy | 103 | 1
