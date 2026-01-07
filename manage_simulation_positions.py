@@ -76,35 +76,75 @@ class SimulationPositionManager:
             total_pnl += float(pos.pnl)
             
             if prefix not in grouped:
-                try:
-                    name = self.api.Contracts.Futures[pos.code].name
-                except:
-                    name = pos.code
                 grouped[prefix] = {
-                    'name': name,
                     'quantity': 0,
                     'pnl': 0.0,
-                    'positions': []
+                    'positions': [],
+                    'months': set()  # 記錄包含的月份
                 }
             
             grouped[prefix]['quantity'] += qty
             grouped[prefix]['pnl'] += float(pos.pnl)
             grouped[prefix]['positions'].append(pos)
+            
+            # 提取月份代碼 (例如: DHFA6 -> FA, DHFB6 -> FB)
+            if len(pos.code) >= 4:
+                month_code = pos.code[2:4]  # FA, FB, FC...
+                grouped[prefix]['months'].add(month_code)
         
         # 顯示彙總表格
         summary_data = []
         for prefix in sorted(grouped.keys()):
             data = grouped[prefix]
+            
+            # 取得基本商品名稱
+            try:
+                # 從第一個持倉取得基礎名稱
+                base_name = self.api.Contracts.Futures[data['positions'][0].code].name
+                # 移除末尾的數字 (例如: "鴻海期貨01" -> "鴻海期貨")
+                if base_name[-2:].isdigit():
+                    base_name = base_name[:-2]
+            except:
+                base_name = prefix
+            
+            # 根據月份數量組合名稱
+            months_sorted = sorted(data['months'])
+            if len(months_sorted) > 1:
+                # 提取月份數字 (FA->01, FB->02)
+                month_map = {'FA':'01', 'FB':'02', 'FC':'03', 'FD':'04', 'FE':'05', 'FF':'06',
+                           'FG':'07', 'FH':'08', 'FI':'09', 'FJ':'10', 'FK':'11', 'FL':'12'}
+                month_nums = [month_map.get(m, m) for m in months_sorted]
+                display_name = f"{base_name}{'/'.join(month_nums)}"
+            else:
+                # 只有一個月份，顯示該月份
+                month_map = {'FA':'01', 'FB':'02', 'FC':'03', 'FD':'04', 'FE':'05', 'FF':'06',
+                           'FG':'07', 'FH':'08', 'FI':'09', 'FJ':'10', 'FK':'11', 'FL':'12'}
+                month_num = month_map.get(months_sorted[0], months_sorted[0])
+                display_name = f"{base_name}{month_num}"
+            
+            # 計算買賣口數
+            buy_qty = sum(abs(p.quantity) for p in data['positions'] if str(p.direction) == 'Action.Buy')
+            sell_qty = sum(abs(p.quantity) for p in data['positions'] if str(p.direction) == 'Action.Sell')
+            
+            # 組合買賣資訊
+            if buy_qty > 0 and sell_qty > 0:
+                direction_info = f"買{buy_qty}/賣{sell_qty}"
+            elif buy_qty > 0:
+                direction_info = f"買{buy_qty}"
+            else:
+                direction_info = f"賣{sell_qty}"
+            
             summary_data.append([
                 prefix,
-                data['name'],
+                display_name,
+                direction_info,
                 data['quantity'],
                 f"{(data['quantity']/MAX_TOTAL_POSITION)*100:.1f}%",
                 f"{data['pnl']:+,.2f}",
                 '✅' if data['pnl'] > 0 else '⚠️' if data['pnl'] < 0 else '➖'
             ])
         
-        headers = ['代碼', '商品名稱', '口數', '佔比', '損益', '狀態']
+        headers = ['代碼', '商品名稱', '買賣', '口數', '佔比', '損益', '狀態']
         table = tabulate(summary_data, headers=headers, tablefmt='grid', stralign='center', numalign='right')
         print(table)
         
@@ -132,7 +172,7 @@ class SimulationPositionManager:
             return
         
         print("\n" + "="*120)
-        print("📋 持仓明细")
+        print("📋 持倉明細")
         print("="*120)
         
         detail_data = []
@@ -142,7 +182,7 @@ class SimulationPositionManager:
             except:
                 name = pos.code
             
-            direction = '买进' if str(pos.direction) == 'Action.Buy' else '卖出'
+            direction = '買進' if str(pos.direction) == 'Action.Buy' else '賣出'
             
             if pos.price != 0:
                 pnl_percent = (pos.pnl / (pos.price * abs(pos.quantity))) * 100
@@ -161,7 +201,7 @@ class SimulationPositionManager:
                 f"{pnl_percent:+.2f}%"
             ])
         
-        headers = ['#', '代码', '名称', '方向', '口数', '成本价', '现价', '损益', '损益%']
+        headers = ['#', '代碼', '名稱', '方向', '口數', '成本價', '現價', '損益', '損益%']
         table = tabulate(detail_data, headers=headers, tablefmt='simple')
         print(table)
         print("="*120)
@@ -237,7 +277,7 @@ class SimulationPositionManager:
         print(f"\n✅ 已匯出到: {filename}")
     
     def get_top_positions(self, n=5):
-        """获取持仓最多的商品"""
+        """獲取持倉最多的商品"""
         if not self.positions:
             return []
         
@@ -254,6 +294,149 @@ class SimulationPositionManager:
         
         sorted_items = sorted(grouped.items(), key=lambda x: x[1]['quantity'], reverse=True)
         return sorted_items[:n]
+    
+    def display_orders(self):
+        """顯示下單列表"""
+        print("\n" + "="*120)
+        print(f"📝 下單列表 - {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        print("="*120)
+        
+        try:
+            # 更新訂單狀態
+            self.api.update_status()
+            
+            # 取得所有訂單
+            all_trades = self.api.list_trades()
+            
+            if not all_trades:
+                print("\n✓ 目前無訂單記錄\n")
+                print("="*120)
+                return
+            
+            # 統計資訊
+            total_orders = len(all_trades)
+            fut_orders = [t for t in all_trades if t.contract.security_type == 'FUT']
+            stock_orders = [t for t in all_trades if t.contract.security_type == 'STK']
+            
+            print(f"\n總訂單數: {total_orders}")
+            print(f"  期貨訂單: {len(fut_orders)}")
+            print(f"  股票訂單: {len(stock_orders)}")
+            print("")
+            
+            # 顯示期貨訂單
+            if fut_orders:
+                print("【期貨訂單】")
+                print("-"*120)
+                
+                fut_data = []
+                for idx, trade in enumerate(fut_orders, 1):
+                    try:
+                        contract_name = self.api.Contracts.Futures[trade.contract.code].name
+                    except:
+                        contract_name = trade.contract.code
+                    
+                    order = trade.order
+                    status = trade.status.status
+                    
+                    # 狀態顯示
+                    status_display = {
+                        'PendingSubmit': '待送出',
+                        'PreSubmitted': '預送出',
+                        'Submitted': '已送出',
+                        'Failed': '❌失敗',
+                        'Cancelled': '❌已取消',
+                        'Filled': '✅已成交',
+                        'Filling': '🔄部分成交',
+                        'PartFilled': '🔄部分成交'
+                    }.get(str(status), str(status))
+                    
+                    # 方向
+                    action_display = '買進' if str(order.action) == 'Action.Buy' else '賣出'
+                    
+                    # 價格類型
+                    price_type_display = {
+                        'LMT': '限價',
+                        'MKT': '市價',
+                        'MKP': '範圍市價'
+                    }.get(str(order.price_type).split('.')[-1], str(order.price_type))
+                    
+                    fut_data.append([
+                        idx,
+                        trade.contract.code,
+                        contract_name,
+                        action_display,
+                        int(order.quantity),
+                        f"{float(order.price):.2f}" if order.price else "市價",
+                        price_type_display,
+                        status_display,
+                        trade.order.id[:8] if hasattr(trade.order, 'id') else 'N/A'
+                    ])
+                
+                headers = ['#', '代碼', '名稱', '方向', '口數', '價格', '類型', '狀態', '訂單ID']
+                table = tabulate(fut_data, headers=headers, tablefmt='simple')
+                print(table)
+                print("")
+            
+            # 顯示股票訂單
+            if stock_orders:
+                print("【股票訂單】")
+                print("-"*120)
+                
+                stock_data = []
+                for idx, trade in enumerate(stock_orders, 1):
+                    try:
+                        contract_name = trade.contract.name
+                    except:
+                        contract_name = trade.contract.code
+                    
+                    order = trade.order
+                    status = trade.status.status
+                    
+                    # 狀態顯示
+                    status_display = {
+                        'PendingSubmit': '待送出',
+                        'PreSubmitted': '預送出',
+                        'Submitted': '已送出',
+                        'Failed': '❌失敗',
+                        'Cancelled': '❌已取消',
+                        'Filled': '✅已成交',
+                        'Filling': '🔄部分成交',
+                        'PartFilled': '🔄部分成交'
+                    }.get(str(status), str(status))
+                    
+                    # 方向
+                    action_display = '買進' if str(order.action) == 'Action.Buy' else '賣出'
+                    
+                    # 價格類型
+                    price_type_display = {
+                        'LMT': '限價',
+                        'MKT': '市價',
+                        'MKP': '範圍市價'
+                    }.get(str(order.price_type).split('.')[-1], str(order.price_type))
+                    
+                    stock_data.append([
+                        idx,
+                        trade.contract.code,
+                        contract_name,
+                        action_display,
+                        int(order.quantity),
+                        f"{float(order.price):.2f}" if order.price else "市價",
+                        price_type_display,
+                        status_display,
+                        trade.order.id[:8] if hasattr(trade.order, 'id') else 'N/A'
+                    ])
+                
+                headers = ['#', '代碼', '名稱', '方向', '數量', '價格', '類型', '狀態', '訂單ID']
+                table = tabulate(stock_data, headers=headers, tablefmt='simple')
+                print(table)
+                print("")
+            
+            print("="*120)
+            
+        except Exception as e:
+            print(f"❌ 查詢訂單失敗: {e}")
+            import traceback
+            traceback.print_exc()
     
     def reset_all_positions(self):
         """重置（清空）所有持倉"""
@@ -388,7 +571,7 @@ class SimulationPositionManager:
 def main():
     """主程序"""
     print("\n" + "="*120)
-    print("🎮 模拟持仓管理工具")
+    print("🎮 模擬持倉管理工具")
     print("="*120)
     
     manager = SimulationPositionManager()
@@ -410,12 +593,13 @@ def main():
         print("3. 同時顯示彙總+明細")
         print("4. 匯出持倉報表到檔案")
         print("5. 顯示 TOP 5 持倉商品")
-        print("6. 重新載入持倉（重新整理）")
-        print("7. ⚠️  重置所有持倉（清空全部）")
+        print("6. 📝 查詢下單列表")
+        print("7. 重新載入持倉（重新整理）")
+        print("8. ⚠️  重置所有持倉（清空全部）")
         print("0. 離開")
         print("="*120)
         
-        choice = input("\n請選擇功能 (0-7): ").strip()
+        choice = input("\n請選擇功能 (0-8): ").strip()
         
         if choice == '1':
             manager.display_summary()
@@ -435,10 +619,12 @@ def main():
                 print(f"  {idx}. {code} ({data['name']}): {data['quantity']} 口")
             print("="*120)
         elif choice == '6':
+            manager.display_orders()
+        elif choice == '7':
             print("\n正在重新整理持倉資料...")
             manager.load_positions()
             print("✅ 重新整理完成")
-        elif choice == '7':
+        elif choice == '8':
             manager.reset_all_positions()
         elif choice == '0':
             print("\n👋 再見！")

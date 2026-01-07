@@ -227,9 +227,9 @@ logger.add(
     encoding="utf-8"
 )
 
-# 錯誤日誌（永久保存）
+# 錯誤日誌（使用獨立檔案，避免與其他程式衝突）
 logger.add(
-    "logs/errors.log",
+    "logs/errors_close.log",
     rotation="10 MB",
     retention=None,  # 永久保存
     level="ERROR",
@@ -253,7 +253,7 @@ logger.add("PerryLogs/Close_{time}.log", level="TRACE", rotation="200 MB")
 
 print("✓ 日誌系統已配置")
 print("  - 平倉日誌: logs/closing_YYYY-MM-DD.log (保留30天)")
-print("  - 錯誤日誌: logs/errors.log (永久保存)")
+print("  - 錯誤日誌: logs/errors_close.log (永久保存)")
 print("  - 平倉記錄: logs/closings_YYYY-MM-DD.log (保留90天)\n")
 
 logger.info("=" * 60)
@@ -516,7 +516,7 @@ def PlaceOrder_Stock(contract_stock: sj.contracts.Stock, objAction: Action, floP
         price=floPrice,
         quantity=intQty,
         price_type=sj.constant.StockPriceType.LMT,
-        order_type=sj.constant.FuturesOrderType.ROD, 
+        order_type=sj.constant.OrderType.ROD, 
         octype=sj.constant.FuturesOCType.Auto,
         account=api.stock_account
     )
@@ -546,7 +546,7 @@ def PlaceOrder_Future(contract_fut: sj.contracts.Future, objAction: Action, floP
         price=floPrice,
         quantity=intQty,
         price_type=sj.constant.StockPriceType.LMT,
-        order_type=sj.constant.FuturesOrderType.ROD, 
+        order_type=sj.constant.OrderType.ROD, 
         octype=sj.constant.FuturesOCType.Auto,
         account=api.futopt_account
     )

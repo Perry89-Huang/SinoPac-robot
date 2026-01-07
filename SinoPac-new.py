@@ -296,9 +296,9 @@ logger.add(
     encoding="utf-8"
 )
 
-# 錯誤日誌（永久保存）
+# 錯誤日誌（使用獨立檔案，避免與其他程式衝突）
 logger.add(
-    "logs/errors.log",
+    "logs/errors_new.log",
     rotation="10 MB",
     retention=None,  # 永久保存
     level="ERROR",
@@ -322,7 +322,7 @@ logger.add("PerryLogs/New_{time}.log", level="TRACE", rotation="200 MB")
 
 print("✓ 日誌系統已配置")
 print("  - 交易日誌: logs/trading_YYYY-MM-DD.log (保留30天)")
-print("  - 錯誤日誌: logs/errors.log (永久保存)")
+print("  - 錯誤日誌: logs/errors_new.log (永久保存)")
 print("  - 訂單日誌: logs/orders_YYYY-MM-DD.log (保留90天)\n")
 
 logger.info("=" * 60)
